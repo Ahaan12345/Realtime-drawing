@@ -2,7 +2,7 @@ noseX = 0;
 noseY = 0;
 difference = 0;
 rightWristX = 0;
-leftWristY = 0;
+leftWristX = 0;
 
 function setup(){
     video = createCapture(VIDEO);
@@ -20,9 +20,25 @@ function modelLoaded(){
 }
 
 function gotPoses(results){
-console.log(results);
+    if(results.length > 0)
+    {
+        console.log(results);
+        noseX = results[0].pose.nose.x;
+        noseY = results[0].pose.nose.y;
+        console.log("noseX = " + noseX +"noseY = "+noseY);
+        rightWristX = results[0].pose.rightWrist.x;
+        leftWristX = results[0].pose.leftWrist.x;
+        difference = floor(leftWristX-rightWristX);
+
+        console.log("leftWristX = "+ leftWristX+"rightWristX ="+rightWristX+"difference ="+difference);
+    }   
+    
 }
 
 function draw(){
     background('#ff0000');
+    document.getElementById("squareSide").innerHTML="Size of the square is "+difference+" px";
+    fill('#FF6400');
+    stroke('#000000');
+    square(noseX,noseY,difference);
 }
